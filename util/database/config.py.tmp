@@ -1,0 +1,8 @@
+database_info = {
+    "host":"localhost",
+    "port":3306,
+    "user":"root",
+    "passwd":"root",
+    "db":"spider_data",
+    "charset":"utf8"
+}
