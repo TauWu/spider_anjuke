@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from redis import Redis, ConnectionPool
-from .config import host, port
+from .config import host, port, db
 from ..common.logger import base_info, use_logger
 
 @use_logger(level="info")
@@ -11,7 +11,7 @@ def redis_info(msg):
 class RedisController():
 
     def __init__(self):
-        self.__pool__ = ConnectionPool(host=host, port=port)
+        self.__pool__ = ConnectionPool(host=host, port=port, db=db)
         self._redis_conn = Redis(connection_pool=self.__pool__)
         base_info("Redis连接成功！")
 
