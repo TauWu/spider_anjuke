@@ -52,9 +52,10 @@
 #     db.close
 
 from module.spider.house_selector import HouseSelector
+from module.database.house_selector import HouseSelectorDB
 
 if __name__ == "__main__":
-    hs = HouseSelector(1,1)
+    hs = HouseSelector(10,10)
     house_ids = hs.house_id_list
     for house_id in house_ids:
-        print(house_id)
+        HouseSelectorDB.insert(house_id)

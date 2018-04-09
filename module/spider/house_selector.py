@@ -2,6 +2,7 @@
 # 房源嗅探器 从地图接口中不断尝试获取房源列表
 
 from util.web.proxies import ProxiesRequests
+from module.database.house_selector import HouseSelectorDB
 from constant.value import *
 from constant.logger import *
 import random
@@ -34,7 +35,6 @@ class HouseSelector(ProxiesRequests):
     def __single_mutil_req__(self):
         '''单次并发请求并返回值'''
         self.__get_url_list__
-        print(self.current_url_list)
         
         ProxiesRequests.__init__(self, self.current_url_list)
         self.add_headers(headers=headers)
