@@ -53,9 +53,11 @@
 
 from module.spider.house_selector import HouseSelector
 from module.database.house_selector import HouseSelectorDB
+from module.redis.house_selector import HouseSelectorRDS
 
 if __name__ == "__main__":
     hs = HouseSelector(10,10)
     house_ids = hs.house_id_list
     for house_id in house_ids:
         HouseSelectorDB.insert(house_id)
+        HouseSelectorRDS.insert(house_id["id"], house_id)
