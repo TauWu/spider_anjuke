@@ -2,6 +2,7 @@
 # 房源基础信息插入模块
 
 from util.database import DBController
+from constant.logger import *
 
 def sql_creator(house_info):
     sql = '''
@@ -29,17 +30,19 @@ def sql_creator(house_info):
 
 class HouseSelectorDB(DBController):
 
-    @staticmethod
-    def insert(house_info):
-        db = DBController()
-        sql = sql_creator(house_info)
+    def __init__(self):
+        self.db = DBController()
+        
+    def insert(self, house_info):
+        self.house_info = house_info
+
+        sql = sql_creator(self.house_info)
         try:
-            db.execute(sql)
-        except db.IntegrityError:
-            print("重复插入[%d]！"%house_info["id"])
+            self.db.execute(sql)
+        except self.db.IntegrityError:
+            db_warning("重复插入数据[%d]"%self.house_info["id"])
         except Exception:
-            print("错误插入[%d] %s"%(house_info["id"], sql))
+            db_err("插入数据错误！[%d] %s"%(self.house_info['id'], sql))
         else:
-            print("成功插入[%d]!"%house_info["id"])
-        db.close
+            db_info("成功插入数据[%d]"%self.house_info["id"])
 

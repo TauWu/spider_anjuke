@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from redis import Redis, ConnectionPool
+import json
 from .config import host, port, db
 from ..common.logger import base_info, use_logger
 
@@ -13,14 +14,14 @@ class RedisController():
     def __init__(self):
         self.__pool__ = ConnectionPool(host=host, port=port, db=db)
         self._redis_conn = Redis(connection_pool=self.__pool__)
-        base_info("Redis连接成功！")
+        base_info("Redis连接创建成功！")
 
     def rset(self, key, value):
         self._redis_conn.set(key, value)
-        redis_info("插入【%s】－【%s】"%(key, value))
+        redis_info("插入【%s => %s】"%(key, value))
     
-    def rget(self, key):
-        return str(self._redis_conn.get(key))[2:-1]
+    def rget(self, key):        
+        return self._redis_conn.get(key).decode('utf-8')
 
     def rdel(self, key):
         self._redis_conn.delete(key)
@@ -40,6 +41,17 @@ class RedisController():
             self.rset(key, value)
         
         pipe.execute()
+
+    def rscan(self, size):
+        scanner = self.__scan__
+        for i in range(0, size):
+            yield scanner
+
+    @property
+    def __scan__(self):
+        '''扫描Redis'''
+        for key in self._redis_conn.keys():
+            yield key.decode('utf-8'), self.rget(key).replace("\'","\"")
 
 if __name__ == "__main__":
     r = RedisController()

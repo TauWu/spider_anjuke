@@ -7,3 +7,7 @@ def db_err(msg):
 @use_logger(level="info")
 def db_info(msg):
     pass
+
+@use_logger(level="warn")
+def db_warning(msg):
+    pass

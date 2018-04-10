@@ -2,13 +2,12 @@
 # 房源嗅探器 从地图接口中不断尝试获取房源列表
 
 from util.web.proxies import ProxiesRequests
-from module.database.house_selector import HouseSelectorDB
 from constant.value import *
 from constant.logger import *
 import random
 import json
 
-class HouseSelector(ProxiesRequests):
+class HouseSelectorSPR(ProxiesRequests):
 
     def __init__(self, times=10, size=50):
         '''房源嗅探器 从地图接口中不断尝试获取房源列表

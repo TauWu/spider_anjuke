@@ -16,10 +16,7 @@ database_info = {
 '''
 
 from util.common.logger import use_logger
-
-@use_logger(level="warn")
-def db_warning(msg):
-    pass
+from constant.logger import *
 
 class DBController():
     """
@@ -51,6 +48,7 @@ class DBController():
         self._conn = pymysql.connect(host=host,port=port,user=user, passwd=passwd,db=db,charset='utf8')
         self.cur = self._conn.cursor()
         self.IntegrityError = IntegrityError
+        db_info("数据库连接创建成功！")
 
     def execute(self, SQL):
         # 执行一条SQL语句
@@ -62,3 +60,4 @@ class DBController():
         # 关闭数据库连接
         self._conn.close()
         self.cur.close()
+        db_info("数据库连接断开成功！")

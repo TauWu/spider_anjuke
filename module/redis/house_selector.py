@@ -4,8 +4,11 @@
 from util.redis import RedisController
 
 class HouseSelectorRDS(RedisController):
+    def __init__(self):
+        self.rds = RedisController()
 
-    @staticmethod
-    def insert(house_id, house_info):
-        rds = RedisController()
-        rds.rset(house_id, house_info)
+    def insert(self, house_id, house_info):
+        self.rds.rset(house_id, house_info)
+    
+    def select(self, size):
+        return self.rds.rscan(size)
