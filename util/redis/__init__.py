@@ -11,7 +11,7 @@ def redis_info(msg):
 
 class RedisController():
 
-    def __init__(self):
+    def __init__(self, db=db):
         self.__pool__ = ConnectionPool(host=host, port=port, db=db)
         self._redis_conn = Redis(connection_pool=self.__pool__)
         base_info("Redis连接创建成功！")
@@ -42,13 +42,8 @@ class RedisController():
         
         pipe.execute()
 
-    def rscan(self, size):
-        scanner = self.__scan__
-        for i in range(0, size):
-            yield scanner
-
     @property
-    def __scan__(self):
+    def rscan(self):
         '''扫描Redis'''
         for key in self._redis_conn.keys():
             yield key.decode('utf-8'), self.rget(key).replace("\'","\"")

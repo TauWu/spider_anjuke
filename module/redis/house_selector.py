@@ -10,5 +10,5 @@ class HouseSelectorRDS(RedisController):
     def insert(self, house_id, house_info):
         self.rds.rset(house_id, house_info)
     
-    def select(self, size):
-        return self.rds.rscan(size)
+    def select(self):
+        return self.rds.rscan

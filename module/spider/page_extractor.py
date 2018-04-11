@@ -9,5 +9,5 @@ class PageExtractorSPR():
     
     def __init__(self, page_text):
         self.soup = BeautifulSoup(page_text, "lxml")
-
+        print(self.soup.select("body > div.wrapper > div.mainbox.cf > div.lbox > ul.house-info-zufang.cf > li.full-line.cf > span.price > em"))
     

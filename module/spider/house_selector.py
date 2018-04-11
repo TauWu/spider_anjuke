@@ -22,7 +22,7 @@ class HouseSelectorSPR(ProxiesRequests):
     @property
     def __get_url_list__(self):
         '''获取指定size的待请求的URL列表'''
-        for idx in range(0, self.size):
+        for _ in range(0, self.size):
             self.current_url_list.append(RAW_URL.format(page=random.randint(1,100)))
 
     @property
@@ -51,7 +51,7 @@ class HouseSelectorSPR(ProxiesRequests):
     @property
     def house_id_list(self):
         '''获取房源ID列表'''
-        for i in range(0, self.times):
+        for _ in range(0, self.times):
             res = self.__single_mutil_req__
             for house_infos in res:
                 for house_info in house_infos:
