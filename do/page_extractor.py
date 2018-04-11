@@ -25,5 +25,5 @@ class PageExtractor():
                     '''详情页面在请求完成后没有返回数据 错误代码：1'''
                     pe_rds.insert_empty_id(house_id)
                 else:
-                    PageExtractorSPR(rec[0])
-                    a = input("DEBUG")
+                    pe_spr = PageExtractorSPR(rec[0])
+                    print(pe_spr.house_page_info)

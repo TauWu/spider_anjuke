@@ -11,3 +11,4 @@ AJKPageURL = "https://sh.zu.anjuke.com/fangyuan/{house_id}?from=Filter_1&hfilter
 import re
 
 PAGE_ID_COMPLIE = re.compile(r"fangyuan/(.+)\?from=")
+SUBMIT_DATE_COMPILE = re.compile(r"房屋编码：[0-9]+，发布时间：(.+)")
