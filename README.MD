@@ -32,4 +32,5 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 3. `Timer（待确认）`为一个进程，主要计时是否需要继续运行第一个进程。
 
 ## 架构介绍
-![image](http://p.yujiangongyu.com/b7c29e67-018c-4dd5-96b6-0a4947e46447.png)
+### 架构图解
+![image](https://github.com/TauWu/spider_anjuke/tree/master/constant/images/spider_frame.png)
