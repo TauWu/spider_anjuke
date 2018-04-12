@@ -33,4 +33,4 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 
 ## 架构介绍
 ### 架构图解
-![image](https://github.com/TauWu/spider_anjuke/tree/master/constant/images/spider_frame.png)
+![image](https://raw.githubusercontent.com/TauWu/spider_anjuke/master/constant/images/spider_frame.png)
