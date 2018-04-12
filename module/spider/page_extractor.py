@@ -36,9 +36,9 @@ class PageExtractorSPR():
         house_type, area, orientation, floor, level, house_level = house_info[:6]
         gender = str()
         if len(house_info) == 7:
-            gender = house_info[:-1]
+            gender = house_info[-1]
         community, district, busi_area = [text.get_text() for text in soup.findChild("ul",{"class":"house-info-zufang cf"}).findChildren("a",{"target":"_blank", "_soj":"propview"})]
-        
+
         house_info = dict(price=price, payment=payment, house_type=house_type, area=area, floor=floor, orientation=orientation, level=level,\
         house_level=house_level, gender=gender, community=community, district=district, busi_area=busi_area)
         

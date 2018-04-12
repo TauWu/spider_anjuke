@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS `anjuke_list` (
   `area` int(15) COMMENT '未知字段3',
   `source_type` int(15) COMMENT '未知字段4',
   `is_auction` int(4) COMMENT '未知字段5',
+
+  `page_info_json` json COMMENT '房源详情页面JSON',
   
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近修改时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

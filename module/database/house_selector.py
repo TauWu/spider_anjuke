@@ -30,6 +30,8 @@ def sql_creator(house_info):
 
 class HouseSelectorDB(DBController):
 
+    __name__ = "HouseSelectorDB"
+
     def __init__(self):
         self.db = DBController()
         
@@ -40,9 +42,9 @@ class HouseSelectorDB(DBController):
         try:
             self.db.execute(sql)
         except self.db.IntegrityError:
-            db_warning("重复插入数据[%d]"%self.house_info["id"])
+            db_warning("[%s]重复插入数据[%d]"%(self.__name__, self.house_info["id"]))
         except Exception:
-            db_err("插入数据错误！[%d] %s"%(self.house_info['id'], sql))
+            db_err("[%s]插入数据错误[%d] %s"%(self.__name__, self.house_info['id'], sql))
         else:
-            db_info("成功插入数据[%d]"%self.house_info["id"])
+            db_info("[%s]成功插入数据[%d]"%(self.__name__, self.house_info["id"]))
 
