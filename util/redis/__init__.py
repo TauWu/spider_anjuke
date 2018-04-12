@@ -18,14 +18,14 @@ class RedisController():
 
     def rset(self, key, value):
         self._redis_conn.set(key, value)
-        redis_info("插入【%s => %s】"%(key, value))
+        redis_info("db%d:插入【%s => %s】"%(db, key, value))
     
     def rget(self, key):        
         return self._redis_conn.get(key).decode('utf-8')
 
     def rdel(self, key):
         self._redis_conn.delete(key)
-        redis_info("删除key为【%s】的缓存"%key)
+        redis_info("db%d:删除【%s】的缓存"%(db,key))
 
     @property
     def dbsize(self):
@@ -49,16 +49,4 @@ class RedisController():
             yield key.decode('utf-8'), self.rget(key).replace("\'","\"")
 
 if __name__ == "__main__":
-    r = RedisController()
-    r.rset("1","SH0003407698")
-
-    lists = list()
-    list_detail = dict()
-    for i in range(2,5):
-        list_detail[str(i)] = "SH0003407714"
-        lists.append(list_detail)
-        list_detail = dict()
-    
-    print(lists)
-
-    r.rpipeset(lists)
+    pass

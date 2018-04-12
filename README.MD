@@ -30,3 +30,6 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 1. `房源嗅探器`+`存入Redis` 为一个进程，带sleep执行爬虫任务；
 2. `Redis->DB`+`Redis->bs->DB` 为一个进程，此步骤较慢；
 3. `Timer（待确认）`为一个进程，主要计时是否需要继续运行第一个进程。
+
+## 架构介绍
+![image](http://p.yujiangongyu.com/b7c29e67-018c-4dd5-96b6-0a4947e46447.png)

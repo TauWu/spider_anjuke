@@ -50,4 +50,3 @@ class HouseSelector():
             if len(house_id_list) == 0:
                 break
             yield house_id_list
-

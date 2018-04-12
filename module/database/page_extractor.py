@@ -33,7 +33,6 @@ class PageExtractorDB():
         try:
             self.db.execute(sql)
         except Exception:
-            db_err("[%s]插入数据错误[%s] %s"%(self.__name__, page_info['house_id'], sql))
+            db_err("[%s]更新数据错误[%s] %s"%(self.__name__, page_info['house_id'], sql))
         else:
-            db_info("[%s]成功插入数据[%s]"%(self.__name__, page_info["house_id"]))
-
+            db_info("[%s]成功更新数据[%s]"%(self.__name__, page_info["house_id"]))
