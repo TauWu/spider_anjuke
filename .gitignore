@@ -103,3 +103,5 @@ ENV/
 config.py
 
 nohup.out
+
+*.cfg

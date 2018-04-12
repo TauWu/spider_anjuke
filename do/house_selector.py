@@ -8,6 +8,7 @@ class HouseSelector():
     '''此处存放房源嗅探器的操作'''
 
     @staticmethod
+    @set_timeout(10)
     def spider_to_rds(times=10, size=50):
         '''从接口获取房源ID列表并存入Redis'''
         hs = HouseSelectorSPR(times, size)

@@ -5,6 +5,26 @@ ProjectName | Author | CreateDate | ChineseName
 --- | --- | --- | ---
 spider_anjuke | TauWoo | 2018-03-29 | 安居客房源信息爬虫
 
+## 依赖模块
+```sh
+# 软件依赖
+apt-get install python3
+apt-get install python3-pip
+apt-get install redis-serverv
+apt-get install mysql-server
+apt-get install python-bs4
+
+# Python库依赖
+pip3 install requests
+pip3 install PyMySQL
+pip3 install configparser
+pip3 install beautifulsoup4
+pip3 install lxml
+pip3 install gevent
+pip3 install fake-useragent
+pip3 install redis
+```
+
 ## 实现思路
 1. 房源嗅探器从安居客提供的地图房源API中不断读取房源列表（同样的请求返回值不一样，依次为思路）；
 2. 将从API获取到的房源ID和房源部分信息存入Redis中，如果已经有该值就更新；
