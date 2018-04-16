@@ -12,6 +12,7 @@ def get_config():
     print("开始配置数据库...")
     db_host = input("请输入数据库的host（跳过为localhost）")
     db_user = input("请输入数据库的user（跳过为root）")
+    db_port = input("请输入数据库的端口（跳过为3306）")
     db_pwd = input("请输入数据库的pwd（跳过为root）")
     db_db = input("请输入数据库的数据库名（跳过为spider_anjuke）")
 
@@ -23,6 +24,8 @@ def get_config():
         db_pwd = "root"
     if len(db_db) == 0:
         db_db = "spider_anjuke"
+    if len(db_port) == 0:
+        db_port = "3306"
     
     # 代理配置
     while True:
@@ -62,8 +65,8 @@ def get_config():
     redis_ps_db = int(redis_ps_db)
             
     return dict(
-        database=dict(host=db_host, user=db_user, pwd=db_pwd, db=db_db),
-        proxy = dict(order_no=proxy_order_no, secret=proxy_secret, 
+        database=dict(host=db_host, user=db_user, passwd=db_pwd, db=db_db, port=db_port),
+        proxy = dict(orderno=proxy_order_no, secret=proxy_secret, 
             ip_port=proxy_ip_port, raw_url=proxy_raw_url),
         redis_hs = dict(host=redis_host, port=redis_port, db=redis_hs_db),
         redis_pe = dict(host=redis_host, port=redis_port, db=redis_pe_db),

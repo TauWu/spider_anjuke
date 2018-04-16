@@ -4,6 +4,10 @@ from util.common.logger import use_logger
 def base_info(msg):
     pass
 
+@use_logger(level="fatal")
+def db_fatal(msg):
+    pass
+
 @use_logger(level="err")
 def db_err(msg):
     pass
@@ -13,7 +17,7 @@ def db_info(msg):
     pass
 
 @use_logger(level="warn")
-def db_warning(msg):
+def db_warn(msg):
     pass
 
 @use_logger(level="warn")

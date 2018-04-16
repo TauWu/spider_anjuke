@@ -1,22 +1,7 @@
 # -*- coding: utf-8 -*-
 
-## 这一级目录下需要有一个数据库配置文件 config.py
-
-# 待连接数据库基础信息
-
-'''
-database_info = {
-    "host":"localhost",
-    "port":3306,
-    "user":"user",
-    "passwd":"passwd",
-    "db":"database",
-    "charset":"utf8"
-}
-'''
-
-from util.common.logger import use_logger
 from constant.logger import *
+from util.config import ConfigReader
 
 class DBController():
     """
@@ -30,25 +15,21 @@ class DBController():
 
     """
 
-    def __init__(self, host="localhost", user="root", passwd="root", port=3306, db="spider_anjuke"):
+    def __init__(self, section_name="database"):
         import pymysql
         from pymysql.err import IntegrityError
 
-        try:
-            from .config import database_info
-            host=database_info["host"]
-            port=database_info["port"]
-            user=database_info["user"]
-            passwd=database_info["passwd"]
-            db=database_info["db"]
-        except ImportError:
-            db_warning("没有找到数据库配置文件，将以默认方法创建连接")
+        (host, port, user, passwd, db) = ConfigReader.read_section_keylist(section_name,[
+            "host", "port", "user", "passwd", "db"])
 
         # 保护连接为私有成员
-        self._conn = pymysql.connect(host=host,port=port,user=user, passwd=passwd,db=db,charset='utf8')
+        try:
+            self._conn = pymysql.connect(host=host, port=int(port), user=user, passwd=passwd, db=db, charset='utf8')
+        except Exception:
+            db_fatal("数据库连接创建失败！[%s:%s@%s:%s?charset=%s/%s]"%(user, passwd, host, port, "utf-8", db))
         self.cur = self._conn.cursor()
         self.IntegrityError = IntegrityError
-        db_info("数据库连接创建成功！")
+        db_info("数据库连接创建成功！[%s:%s@%s:%s?charset=%s/%s]"%(user, passwd, host, port, "utf-8", db))
 
     def execute(self, SQL):
         # 执行一条SQL语句

@@ -42,7 +42,7 @@ class HouseSelectorDB(DBController):
         try:
             self.db.execute(sql)
         except self.db.IntegrityError:
-            db_warning("[%s]重复插入数据[%d]"%(self.__name__, self.house_info["id"]))
+            db_warn("[%s]重复插入数据[%d]"%(self.__name__, self.house_info["id"]))
         except Exception:
             db_err("[%s]插入数据错误[%d] %s"%(self.__name__, self.house_info['id'], sql))
         else:
