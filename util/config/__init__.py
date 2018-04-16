@@ -28,3 +28,17 @@ class ConfigParser():
     @property
     def save(self):
         self.config.write(open(self.config_file, 'w'))
+
+class ConfigReader(ConfigParser):
+
+    @staticmethod
+    def read_section_key(section_name, k):
+        cp = ConfigParser(config_file='spider.cfg', section_name=section_name)
+        return cp.read(k)
+
+    @staticmethod
+    def read_section_keylist(section_name, k_list):
+        v_list = list()
+        for k in k_list:
+            v_list.append(ConfigReader.read_section_key(section_name=section_name, k=k))
+        return tuple(v_list)

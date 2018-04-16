@@ -10,17 +10,8 @@ import gevent
 from gevent import monkey; monkey.patch_all()
 
 # 配置文件
-from .config import *
-from ..common.logger import use_logger
-
-@use_logger(level="warn")
-def req_warn(msg):
-    pass
-
-@use_logger(level="err")
-def req_err(msg):
-    pass
-
+from util.config import ConfigReader
+from constant.logger import *
 
 # 代理 用户验证部分 - 一天检查一次，所以多次调用时不重复此步骤
 class ProxiesHeaders():
@@ -29,15 +20,18 @@ class ProxiesHeaders():
 
     '''
     def __init__(self):
+        # 获取配置文件
+        (self.orderno, self.secret, self.ip_port) = ConfigReader.read_section_keylist("proxy", ["orderno", "secret", "ip_port"])
+
         self.__timestamp = str(int(time.time()))
-        self.__string = "orderno={orderno},secret={secret},timestamp={timestamp}".format(orderno=orderno,secret=secret,timestamp=self.__timestamp)
+        self.__string = "orderno={orderno},secret={secret},timestamp={timestamp}".format(orderno=self.orderno,secret=self.secret,timestamp=self.__timestamp)
         self.__string=self.__string.encode()
 
     @property
     def _auth_(self):
         self.__md5_string = hashlib.md5(self.__string).hexdigest()
         self.__sign = self.__md5_string.upper()
-        self._auth = "sign=%s&orderno=%s&timestamp=%s"%(self.__sign, orderno, self.__timestamp)
+        self._auth = "sign=%s&orderno=%s&timestamp=%s"%(self.__sign, self.orderno, self.__timestamp)
         return self._auth
 
     @property
@@ -59,7 +53,7 @@ class ProxiesRequests(ProxiesHeaders):
         self.__auth_with_time = self.auth_with_time
         self.__proxy_auth = self.__auth_with_time[0]
         self.__timestamp = self.__auth_with_time[1]
-        self._proxy = {"http": "http://%s"%ip_port, "https": "https://%s"%ip_port}
+        self._proxy = {"http": "http://%s"%self.ip_port, "https": "https://%s"%self.ip_port}
         self._headers = {"Proxy-Authorization": self.__proxy_auth}
         self._single_content = None
         self._content = list()
@@ -123,6 +117,8 @@ class ProxiesVaild(ProxiesRequests):
     '''测试代理代码'''
 
     def __init__(self, num=1):
+        raw_url = ConfigReader.read_section_key("proxy","raw_url")
+        
         self.vaild_urls = []
         self.ip_infos = []
         for i in range(0, num):

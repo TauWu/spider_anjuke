@@ -70,8 +70,6 @@ def get_config():
         redis_ps = dict(host=redis_host, port=redis_port, db=redis_ps_db)
     )
     
-
-
 if __name__ == "__main__":
     # 配置文件基础
     cp = ConfigParser(config_file="spider.cfg")

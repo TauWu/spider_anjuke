@@ -11,3 +11,15 @@ def db_info(msg):
 @use_logger(level="warn")
 def db_warning(msg):
     pass
+
+@use_logger(level="warn")
+def req_warn(msg):
+    pass
+
+@use_logger(level="info")
+def req_info(msg):
+    pass
+
+@use_logger(level="error")
+def req_err(msg):
+    pass
