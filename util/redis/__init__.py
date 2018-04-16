@@ -15,14 +15,14 @@ class RedisController():
 
     def rset(self, key, value):
         self._redis_conn.set(key, value)
-        redis_info("db%d:插入【%s => %s】"%(self.db, key, value))
+        redis_info("db%s:插入【%s => %s】"%(self.db, key, value))
     
     def rget(self, key):
         return self._redis_conn.get(key).decode('utf-8')
 
     def rdel(self, key):
         self._redis_conn.delete(key)
-        redis_info("db%d:删除【%s】的缓存"%(self.db,key))
+        redis_info("db%s:删除【%s】的缓存"%(self.db,key))
 
     @property
     def dbsize(self):
