@@ -18,7 +18,8 @@ class ConfigParser():
         self.section_name = section_name
 
     def set_kv(self, k, v):
-        self.config.set(self.section_name, k, v)
+        self.config.set(self.section_name, k, str(v))
+        self.save
 
     def read(self, k):
         self.config.read(self.config_file)
