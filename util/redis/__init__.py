@@ -5,6 +5,31 @@ import json
 from util.config import ConfigReader
 from constant.logger import *
 
+def equal(object1, object2):
+    obj1_type = type(object1)
+    obj2_type = type(object2)
+
+    # 判断类型
+    if obj1_type != obj2_type:
+        return False
+    else:
+        # 是json？
+        if obj1_type == str:
+            try:
+                object1_json = json.loads(object1.replace("\'","\""))
+                object2_json = json.loads(object2.replace("\'","\""))
+            except Exception:
+                pass
+            else:
+                if object1_json == object2_json:
+                    return True
+        else:
+            if object1 == object2:
+                return True
+            else:
+                return False
+
+
 class RedisController():
         
     def __init__(self, section_name="redis_hs"):
@@ -14,11 +39,20 @@ class RedisController():
         base_info("Redis连接%s创建成功！[%s:%s db%s]"%(section_name, host, port, self.db))
 
     def rset(self, key, value):
+        rvalue = self.rget(key)
+        if equal(str(value), str(rvalue)):
+            redis_info("db%s:set【%s %s => <=】"%(self.db, key, rvalue))
+        elif rvalue == None:
+            redis_info("db%s:set【%s () => %s】"%(self.db, key, value))
+        else:
+            redis_info("db%s:set【%s %s => %s】"%(self.db, key, rvalue, value))
         self._redis_conn.set(key, value)
-        redis_info("db%s:插入【%s => %s】"%(self.db, key, value))
     
     def rget(self, key):
-        return self._redis_conn.get(key).decode('utf-8')
+        try:
+            return self._redis_conn.get(key).decode('utf-8')
+        except Exception:
+            return None
 
     def rdel(self, key):
         self._redis_conn.delete(key)
