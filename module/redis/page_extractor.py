@@ -6,7 +6,7 @@ from util.redis import RedisController
 class PageExtractorRDS(RedisController):
 
     def __init__(self):
-        self.rds = RedisController(db=1)    # 相对于房源库，选用另一个数据库
+        self.rds = RedisController(section_name="redis_pe")
 
     def __insert_id__(self, house_id, err_type):
         '''插入房源ID的基础方法

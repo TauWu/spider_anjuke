@@ -61,12 +61,7 @@ def use_logger(level):
         
     return decorator
 
-@use_logger(level="info")
-def base_info(msg):
-    pass
-
 # 测试代码
-
 @use_logger(level="err")
 def foo(msg):
     print("将会打印日志 %s"%msg)
