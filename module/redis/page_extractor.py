@@ -11,6 +11,7 @@ class PageExtractorRDS(RedisController):
     def __insert_id__(self, house_id, err_type):
         '''插入房源ID的基础方法
         err_type枚举:
+        - -1 未曾发起过请求
         - 0 请求成功，删除错误标记
         - 1 请求详情页面成功，但是页面返回为空值 
         - 2 页面由于加载不完全出现的部分元素信息缺失
@@ -20,6 +21,10 @@ class PageExtractorRDS(RedisController):
             self.rds.rdel(house_id)
         else:
             self.rds.rset(house_id, err_type)
+
+    def insert_init(self, house_id):
+        '''初始插入所有的房源ID列表'''
+        self.__insert_id__(house_id, err_type=-1)
 
     def insert_empty_id(self, house_id):
         '''存放请求详情页面但页面返回数据为空的情况的房源ID'''

@@ -29,7 +29,7 @@ def get_config():
     
     # 代理配置
     while True:
-        print("开始配置代理相关信息")
+        print("开始配置代理相关信息...")
         proxy_order_no = input("请输入代理订单号码")
         proxy_secret = input("请输入代理secret密钥")
         proxy_ip_port = "forward.xdaili.cn:80"
@@ -43,7 +43,7 @@ def get_config():
         
     # Redis配置
     # BasicInfo Redis
-    print("开始配置Redis连接")
+    print("开始配置Redis连接...")
     redis_host = input("请输入Redis的host（跳过为localhost）")
     if len(redis_host) == 0:
         redis_host = "127.0.0.1"

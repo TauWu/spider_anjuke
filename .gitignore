@@ -100,8 +100,6 @@ ENV/
 # mypy
 .mypy_cache/
 
-config.py
-
 nohup.out
 
 *.cfg

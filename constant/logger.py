@@ -35,3 +35,7 @@ def req_err(msg):
 @use_logger(level="info")
 def redis_info(msg):
     pass
+
+@use_logger(level="err")
+def redis_err(msg):
+    pass

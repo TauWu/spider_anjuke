@@ -20,16 +20,26 @@ class HouseSelector():
 
     @staticmethod
     def rds_to_db():
-        '''将Redis中的房源信息存入DB'''
+        '''将Redis中的房源信息存入DB和Redis的非房源数据库'''
         hs_rds = HouseSelectorRDS()
         hs_db = HouseSelectorDB()
+        pe_rds = PageExtractorRDS()
 
         hs_data_iter = hs_rds.select()
         for hs_data in hs_data_iter:
+            # 将房源ID和基础信息插入数据库
             try:
                 hs_db.insert(json.loads(hs_data[1]))
             except Exception as e:
                 db_err("Redis数据插入数据库错误 %s"%(str(e)))
+                
+            # 将房源ID插入Redis db1
+            try:
+                pe_rds.insert_init(hs_data[0])
+            except Exception as e:
+                redis_err("Redis数据插入db1错误 %s"%(str(e)))
+
+            #TODO 将房源ID插入Redis db2
         
         hs_db.db.close
 
