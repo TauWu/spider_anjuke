@@ -32,7 +32,7 @@ class PageExtractorDB():
 
         try:
             self.db.execute(sql)
-        except Exception:
-            db_err("[%s]更新数据错误[%s] %s"%(self.__name__, page_info['house_id'], sql))
+        except Exception as e:
+            db_err("[%s]更新数据错误[%s] %s %s "%(self.__name__, page_info['house_id'], str(e), sql))
         else:
             db_info("[%s]成功更新数据[%s]"%(self.__name__, page_info["house_id"]))

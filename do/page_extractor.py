@@ -48,10 +48,14 @@ class PageExtractor():
                     except AttributeError:
                         pe_rds.insert_lose_element_id(house_id)
                     
+                    # 房源小区名称获取错误(算成功 需要人工检查)
+                    except RuntimeWarning as w:
+                        base_warn("警告房源编号%s 警告信息%s"%(house_id, str(w)))
+                        pe_rds.insert_success_id(house_id)
+
                     # 未知错误
-                    except Exception:
-                        base_err("错误的房源编号%s"%house_id)
-                        raise
+                    except Exception as e:
+                        base_err("错误的房源编号%s 错误信息:%s"%(house_id, str(e)))
                     else:
                         pe_rds.insert_success_id(house_id)
 

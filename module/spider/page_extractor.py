@@ -18,7 +18,7 @@ class PageExtractorSPR():
         soup = self.soup
 
         # 详情页标题
-        title = soup.select_one("body > div.wrapper > h3").get_text()
+        title = soup.select_one("body > div.wrapper > h3").get_text().strip()
         
         # 详情页Tag
         price, rooms, halls, area = [text.get_text() for text in soup.findChild("div",{"class":"title-basic-info clearfix"}).findChildren("em")]
@@ -38,15 +38,21 @@ class PageExtractorSPR():
         if len(house_info) == 7:
             gender = house_info[-1]
         
-        community_info = re.findall(r'([\u4e00-\u9fa5]+)', str(soup.findChild("ul",{"class":"house-info-zufang cf"}).findChildren("li",{"class":"house-info-item l-width"})[-1]))
+        community_info = [re.findall(r'>(.+)</a>', str(i))[0] for i in soup.findChild("ul",{"class":"house-info-zufang cf"}).\
+            findChildren("li",{"class":"house-info-item l-width"})[-1].findChildren("a",{"_soj":"propview"})]
 
-        if len(community_info) == 4:
-            community, district, busi_area = community_info[1:]
-        elif len(community_info) == 5:
-            community, _, district, busi_area = community_info[1:]
+        # print(str(soup.findChild("ul",{"class":"house-info-zufang cf"}).\
+        #     findChildren("li",{"class":"house-info-item l-width"})[-1].findChildren("a",{"_soj":"propview"})))
+
+        if len(community_info) == 3:
+            community, district, busi_area = community_info[:]
+        elif len(community_info) == 2:
+            district, busi_area = community_info[:]
+            community = re.findall(r'</span>([\s\S]+)\(<a',str(soup.findChild("ul",{"class":"house-info-zufang cf"}).\
+                findChildren("li",{"class":"house-info-item l-width"})[-1]))[0].replace("\t","").replace(" ","").replace('\n','')
+            raise RuntimeWarning("房源信息重新解析 %s %s %s"%(district, busi_area, community))
         else:
-            print(community_info)
-            a = input("DEBUG")
+            raise ValueError("房源信息解析错误 %s"%str(community_info))
             
         house_info = dict(price=price, payment=payment, house_type=house_type, area=area, floor=floor, orientation=orientation, level=level,\
         house_level=house_level, gender=gender, community=community, district=district, busi_area=busi_area)
