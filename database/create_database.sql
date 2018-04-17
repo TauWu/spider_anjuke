@@ -26,3 +26,16 @@ CREATE TABLE IF NOT EXISTS `anjuke_list` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`house_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `anjuke_price_trend` (
+
+  `community_id` int(15) COMMENT '地标ID',
+  `block_id` int(15) COMMENT '商圈ID',
+  `area_id` int(15) COMMENT '未知字段3',
+
+  `price_trend_json` json COMMENT '价格趋势JSON',
+  
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近修改时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`community_id`, `block_id`, `area_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

@@ -2,7 +2,7 @@
 # 房源详情页抓取器数据库操作
 
 from util.database import DBController
-from constant.logger import *
+from constant.logger import db_err, db_info
 from json import dumps
 
 class PageExtractorDB():

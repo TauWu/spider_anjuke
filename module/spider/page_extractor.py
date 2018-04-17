@@ -41,9 +41,6 @@ class PageExtractorSPR():
         community_info = [re.findall(r'>(.+)</a>', str(i))[0] for i in soup.findChild("ul",{"class":"house-info-zufang cf"}).\
             findChildren("li",{"class":"house-info-item l-width"})[-1].findChildren("a",{"_soj":"propview"})]
 
-        # print(str(soup.findChild("ul",{"class":"house-info-zufang cf"}).\
-        #     findChildren("li",{"class":"house-info-item l-width"})[-1].findChildren("a",{"_soj":"propview"})))
-
         if len(community_info) == 3:
             community, district, busi_area = community_info[:]
         elif len(community_info) == 2:
