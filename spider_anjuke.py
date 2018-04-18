@@ -1,3 +1,4 @@
+#!/usr/bin/python3.5
 # -*- coding: utf8 -*-
 
 from do.run import Do
