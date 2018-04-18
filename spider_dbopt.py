@@ -4,9 +4,12 @@
 
 from util.database import DBController
 from util.common.date import Time
-import sys
-
+from util.config import ConfigReader
 from util.common.logger import use_logger
+from util.redis import RedisController
+
+import sys
+import time
 
 @use_logger(level="info")
 def db_optor_info(msg):
@@ -83,10 +86,12 @@ create_price_trend_table = """
 def create(db):
     '''新建空表操作'''
     c1_sql = create_house_list_table.format(tablename=house_list_name)
-    c2_sql = create_price_trend_table.format(tablename=price_trend_name)
-
     db.execute(c1_sql)
-    db.execute(c2_sql)
+    
+    ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
+    if int(ps_mday) == int(time.localtime().tm_mday):
+        c2_sql = create_price_trend_table.format(tablename=price_trend_name)
+        db.execute(c2_sql)
 
 
 def truncate(db):
@@ -99,18 +104,27 @@ def truncate(db):
 
 def backup_table(db, t):
     '''备份缓存表操作'''
-    b1_sql = rename_sql.format(fromname=house_list_name,toname="%s_%s"%(house_list_name, t))
-    b2_sql = rename_sql.format(fromname=price_trend_name,toname="%s_%s"%(price_trend_name, t))
 
+    b1_sql = rename_sql.format(fromname=house_list_name,toname="%s_%s"%(house_list_name, t))
     db.execute(b1_sql)
-    db.execute(b2_sql)
+
+    ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
+    if int(ps_mday) == int(time.localtime().tm_mday):
+        b2_sql = rename_sql.format(fromname=price_trend_name,toname="%s_%s"%(price_trend_name, t[:-2]))
+        db.execute(b2_sql)
 
     create(db)
+    truncate_redis()
+
+def truncate_redis():
+    # 清空Redis - PageExtractor
+    rds = RedisController(section_name="redis_pe")
+    rds._redis_conn.flushdb()
+
 
 if __name__ == "__main__":
     # 创建数据库连接
     db = DBController()
-    
     # 获取当前时间
     t = Time.now_date_str()
 
@@ -140,6 +154,11 @@ if __name__ == "__main__":
                 create(db)
                 db_optor_info("创建完成！")
 
+            elif opeartor.strip() == "4":
+                db_optor_info("开始清空Redis...")
+                truncate_redis()
+                db_optor_info("清空完成！")
+
             else:
                 db_optor_info("\n【%s】操作不存在，请重新选择！"%opeartor)
                 continue
@@ -163,6 +182,10 @@ if __name__ == "__main__":
             db_optor_info("开始创建新的数据表...")
             create(db)
             db_optor_info("创建完成！")
+        elif opeartor.strip() == "4":
+            db_optor_info("开始清空Redis...")
+            truncate_redis()
+            db_optor_info("清空完成！")
     
     else:
         raise ValueError("参数太多")

@@ -4,7 +4,7 @@ from do.house_selector import HouseSelector
 from do.page_extractor import PageExtractor
 from do.price_stater import PriceStater
 
-from util.config import ConfigReader
+from util.config import ConfigParser
 from constant.logger import *
 
 import time
@@ -49,7 +49,7 @@ class Do(HouseSelector, PageExtractor, PriceStater):
             ps_mday  = 1
             ps_size  = 20
         else:
-            cfg_reader = ConfigReader(config_file="spider.cfg", section_name="quota")
+            cfg_reader = ConfigParser(config_file="spider.cfg", section_name="quota")
             hs_times = cfg_reader.read("hs_times")
             hs_size  = cfg_reader.read("hs_size")
             pe_times = cfg_reader.read("pe_times")
