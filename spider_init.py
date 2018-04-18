@@ -63,14 +63,39 @@ def get_config():
     # PriceStater Redis
     redis_ps_db = input("请输入PS的Redis数据库编号（数字）")
     redis_ps_db = int(redis_ps_db)
-            
+
+    # 配额配置
+    print("开始配置爬虫配额...")
+    hs_times = input("请输入HouseSelector执行的次数（跳过为10次）")
+    if len(hs_times) == 0:
+        hs_times = 10
+    hs_size = input("请输入HouseSelector每次嗅探的链接并发量（跳过为50）")
+    if len(hs_size) == 0:
+        hs_size = 10    
+
+    pe_times = input("请输入PageExtractor循环步骤中执行的次数（跳过为5次）")
+    if len(pe_times) == 0:
+        pe_times = 10
+    pe_size = input("请输入PageExtractor每次的链接并发量（跳过为20次）")
+    if len(pe_size) == 0:
+        pe_size = 10
+        
+    ps_mday = input("请输入PriceStater每次运行于几号（跳过为1号）")
+    if len(ps_mday) == 0:
+        ps_mday = 10
+    ps_size = input("请输入PriceStater每次链接请求的并发量（跳过为20次）")
+    if len(ps_size) == 0:
+        ps_size = 10
+                    
     return dict(
         database=dict(host=db_host, user=db_user, passwd=db_pwd, db=db_db, port=db_port),
         proxy = dict(orderno=proxy_order_no, secret=proxy_secret, 
             ip_port=proxy_ip_port, raw_url=proxy_raw_url),
         redis_hs = dict(host=redis_host, port=redis_port, db=redis_hs_db),
         redis_pe = dict(host=redis_host, port=redis_port, db=redis_pe_db),
-        redis_ps = dict(host=redis_host, port=redis_port, db=redis_ps_db)
+        redis_ps = dict(host=redis_host, port=redis_port, db=redis_ps_db),
+        quota = dict(hs_times=hs_times, hs_size=hs_size, pe_times=pe_times, 
+            pe_size=pe_size, ps_mday=ps_mday, ps_size=ps_size)
     )
     
 if __name__ == "__main__":

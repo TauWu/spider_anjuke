@@ -57,10 +57,10 @@ class Do(HouseSelector, PageExtractor, PriceStater):
             ps_mday  = cfg_reader.read("ps_mday")
             ps_size  = cfg_reader.read("ps_size")
         
-        Do.step_hs(times=hs_times, size=hs_size)
+        Do.step_hs(times=int(hs_times), size=int(hs_size))
 
-        p_step_pe = Process(target=Do.step_pe, args=(pe_times, pe_size, ))
-        p_step_ps = Process(target=Do.step_pe, args=(ps_size, ps_mday, ))
+        p_step_pe = Process(target=Do.step_pe, args=(int(pe_times), int(pe_size), ))
+        p_step_ps = Process(target=Do.step_pe, args=(int(ps_size), int(ps_mday), ))
 
         p_step_pe.start()
         p_step_ps.start()

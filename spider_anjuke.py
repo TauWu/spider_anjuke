@@ -3,4 +3,4 @@
 from do.run import Do
 
 if __name__ == "__main__":
-    Do.step_pe()
+    Do.do(False)
