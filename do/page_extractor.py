@@ -61,8 +61,9 @@ class PageExtractor():
         pe_db.close
 
     @staticmethod
-    def loop_page_extract(size=20):
+    def loop_page_extract(times=5, size=20):
         '''循环获取页面信息直到...
         - 直到的条件待定
         '''
-        pass
+        for _ in range(0, times):
+            PageExtractor.base_page_extract(size)
