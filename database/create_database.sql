@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS `spider_anjuke`;
+
+USE `spider_anjuke`;
+
 CREATE TABLE IF NOT EXISTS `anjuke_list` (
 
   `house_id` int(11) NOT NULL COMMENT '房源编号',
