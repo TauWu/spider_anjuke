@@ -8,4 +8,4 @@ if __name__ == "__main__":
     HouseSelector.spider_to_rds()
     HouseSelector.rds_to_db()
     PageExtractor.base_page_extract(50)
-    PriceStater.funcname(50)
+    PriceStater.price_stat(50)

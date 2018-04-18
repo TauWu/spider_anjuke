@@ -36,3 +36,7 @@ class PageExtractorDB():
             db_err("[%s]更新数据错误[%s] %s %s "%(self.__name__, page_info['house_id'], str(e), sql))
         else:
             db_info("[%s]成功更新数据[%s]"%(self.__name__, page_info["house_id"]))
+
+    @property
+    def close(self):
+        self.close
