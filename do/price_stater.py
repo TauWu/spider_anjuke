@@ -12,3 +12,4 @@ class PriceStater():
         json_iter = ps_spr.price_stat_json_iter
         for j in json_iter:
             ps_db.insert(j)
+        ps_db.exit

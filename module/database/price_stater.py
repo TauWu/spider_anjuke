@@ -65,5 +65,5 @@ class PriceStaterDB():
             db_info("插入一条数据（%s %s %s）"%tuple(json_data[-1].split('-')))
             
     @property
-    def close(self):
+    def exit(self):
         self.close

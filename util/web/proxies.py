@@ -88,7 +88,7 @@ class ProxiesRequests(ProxiesHeaders):
                 self._single_content = req_content
                 break
             except Exception as e:
-                req_warn("请求失败！正在重新发起... %s"%str(e))
+                # req_warn("请求失败！正在重新发起... %s"%str(e))
                 time.sleep(0.5)
                 continue
 
@@ -102,7 +102,9 @@ class ProxiesRequests(ProxiesHeaders):
 
     @property
     def req_content_list(self):
+        req_info("开始发起%d条请求..."%(len(self._urls)))
         self._batch_request_
+        req_info("请求发送完成！")
         return self._content
 
     def add_headers(self, headers):

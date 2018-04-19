@@ -47,4 +47,7 @@ class HouseSelectorDB(DBController):
             db_err("[%s]插入数据错误[%d] %s"%(self.__name__, self.house_info['id'], sql))
         else:
             db_info("[%s]成功插入数据[%d]"%(self.__name__, self.house_info["id"]))
-
+    
+    @property
+    def exit():
+        self.db.close

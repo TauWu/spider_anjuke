@@ -58,7 +58,7 @@ class PageExtractor():
                         base_err("错误的房源编号%s 错误信息:%s"%(house_id, str(e)))
                     else:
                         pe_rds.insert_success_id(house_id)
-        pe_db.close
+        pe_db.exit
 
     @staticmethod
     def loop_page_extract(times=5, size=20):

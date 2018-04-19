@@ -38,5 +38,5 @@ class PageExtractorDB():
             db_info("[%s]成功更新数据[%s]"%(self.__name__, page_info["house_id"]))
 
     @property
-    def close(self):
+    def exit(self):
         self.close
