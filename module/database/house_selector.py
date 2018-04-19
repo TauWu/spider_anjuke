@@ -49,5 +49,5 @@ class HouseSelectorDB(DBController):
             db_info("[%s]成功插入数据[%d]"%(self.__name__, self.house_info["id"]))
     
     @property
-    def exit():
+    def exit(self):
         self.db.close

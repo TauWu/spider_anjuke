@@ -39,4 +39,4 @@ class PageExtractorDB():
 
     @property
     def exit(self):
-        self.close
+        self.db.close

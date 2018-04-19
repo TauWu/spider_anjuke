@@ -33,13 +33,14 @@ class HouseSelector():
             except Exception as e:
                 db_err("Redis数据插入数据库错误 %s"%(str(e)))
                 
-            # 将房源ID插入Redis db1
+            # 将不曾存在于db1的房源ID插入Redis db1
             try:
-                pe_rds.insert_init(hs_data[0])
+                if pe_rds.rds.rget(hs_data[0]) is None:
+                    pe_rds.insert_init(hs_data[0])
+                else:
+                    redis_info("Redis数据插入db1忽略 %s"%(hs_data[0]))
             except Exception as e:
                 redis_err("Redis数据插入db1错误 %s"%(str(e)))
-
-            #TODO 将房源ID插入Redis db2
         
         hs_db.db.close
 
@@ -60,4 +61,5 @@ class HouseSelector():
                     house_id_list.append(hs_data[0])
             if len(house_id_list) == 0:
                 break
+                
             yield house_id_list

@@ -50,8 +50,13 @@ class RedisController():
     
     def rget(self, key):
         try:
-            return self._redis_conn.get(key).decode('utf-8')
-        except Exception:
+            res = self._redis_conn.get(key)
+            if res is not None:
+                return res.decode('utf-8')
+            else:
+                return None
+        except Exception as e:
+            print(str(e))
             return None
 
     def rdel(self, key):
