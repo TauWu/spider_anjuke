@@ -53,7 +53,7 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 
 ## 架构介绍
 ### 架构图解
-![image](https://raw.githubusercontent.com/TauWu/spider_anjuke/master/constant/images/spider_frame.png)
+![image](https://raw.githubusercontent.com/TauWu/spider_anjuke/master/constant/images/spider_anjuke_workflow.png)
 #### 架构图解说明
 - 1.除了PriceStater，其他程序均为每日运行。PriceStater的运行周期是月
 - 2.cba的意思是community/block/area，均是价格趋势图所需要的参数并且可以在HouseSelector中获取到
