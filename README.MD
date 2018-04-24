@@ -10,7 +10,7 @@ spider_anjuke | TauWoo | 2018-03-29 | 安居客房源信息爬虫
 # 软件依赖
 apt-get install python3
 apt-get install python3-pip
-apt-get install redis-serverv
+apt-get install redis-server
 apt-get install mysql-server
 apt-get install python-bs4
 
@@ -54,3 +54,6 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 ## 架构介绍
 ### 架构图解
 ![image](https://raw.githubusercontent.com/TauWu/spider_anjuke/master/constant/images/spider_frame.png)
+
+## TODO
+- 循环执行PageExtractor次数统计有误，请后期核查
