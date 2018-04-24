@@ -41,7 +41,7 @@ class RedisController():
     def rset(self, key, value):
         rvalue = self.rget(key)
         if equal(str(value), str(rvalue)):
-            redis_info("db%s:set【%s %s => <=】"%(self.db, key, rvalue))
+            redis_info("db%s:set【%s => <=】"%(self.db, key))
         elif rvalue == None:
             redis_info("db%s:set【%s () => %s】"%(self.db, key, value))
         else:
