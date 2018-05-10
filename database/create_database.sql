@@ -73,3 +73,27 @@ WHERE
 	TABLE_SCHEMA = 'spider_anjuke' AND table_name LIKE "anjuke_price%"
 ORDER BY 
 	run_month;
+
+-- 数据统计数据表
+DROP TABLE IF EXISTS `count_anjuke_list`;
+DROP TABLE IF EXISTS `count_anjuke_price_trend`;
+
+CREATE TABLE IF NOT EXISTS `count_anjuke_list` (
+
+  `run_date` varchar(31) NOT NULL COMMENT '运行日期',
+  `rows` int(11) NOT NULL COMMENT '爬虫条数',
+  
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近修改时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`run_date`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `count_anjuke_price_trend` (
+
+  `run_month` varchar(31) NOT NULL COMMENT '运行月份',
+  `rows` int(11) NOT NULL COMMENT '爬虫条数',
+  
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近修改时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`run_month`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

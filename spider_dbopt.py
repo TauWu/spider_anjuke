@@ -84,6 +84,21 @@ create_price_trend_table = """
 
 """
 
+count_backup_sql = """
+
+    INSERT INTO
+        count_{tablename}
+        ({columnname}, rows)
+    SELECT 
+        v.{columnname}, v.rows
+    FROM
+        v_{tablename}_count as v
+    WHERE
+        {wherestr}
+    ON DUPLICATE KEY UPDATE {columnname}=v.{columnname}
+
+"""
+
 def create(db):
     '''新建空表操作'''
     c1_sql = create_house_list_table.format(tablename=house_list_name)
@@ -107,12 +122,17 @@ def backup_table(db, t):
     '''备份缓存表操作'''
 
     b1_sql = rename_sql.format(fromname=house_list_name,toname="%s_%s"%(house_list_name, t))
+    count_b1_sql = count_backup_sql.format(tablename=house_list_name, columnname="run_date", wherestr="run_date = %s"%t)
+    db.execute(count_b1_sql)
     db.execute(b1_sql)
 
     ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
     if int(ps_mday) == int(time.localtime().tm_mday):
         b2_sql = rename_sql.format(fromname=price_trend_name,toname="%s_%s"%(price_trend_name, t[:-2]))
+        count_b2_sql = count_backup_sql.format(tablename=price_trend_name, columnname="run_month", wherestr="run_month = %s"%t)
+        db.execute(count_b2_sql)
         db.execute(b2_sql)
+
 
     create(db)
     truncate_redis()
