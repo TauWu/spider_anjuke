@@ -60,7 +60,7 @@ class Do(HouseSelector, PageExtractor, PriceStater):
         Do.step_hs(times=int(hs_times), size=int(hs_size))
 
         p_step_pe = Process(target=Do.step_pe, args=(int(pe_times), int(pe_size), ))
-        p_step_ps = Process(target=Do.step_pe, args=(int(ps_size), int(ps_mday), ))
+        p_step_ps = Process(target=Do.step_ps, args=(int(ps_size), int(ps_mday), ))
 
         p_step_pe.start()
         p_step_ps.start()
