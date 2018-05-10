@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS `spider_anjuke`;
 
 USE `spider_anjuke`;
 
+-- 建立初始化的房源列表
 CREATE TABLE IF NOT EXISTS `anjuke_list` (
 
   `house_id` int(11) NOT NULL COMMENT '房源编号',
@@ -31,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `anjuke_list` (
   PRIMARY KEY (`house_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
+-- 建立初始化的房源价格趋势列表
 CREATE TABLE IF NOT EXISTS `anjuke_price_trend` (
 
   `community_id` int(15) COMMENT '地标ID',
@@ -43,3 +45,31 @@ CREATE TABLE IF NOT EXISTS `anjuke_price_trend` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`community_id`, `block_id`, `area_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+-- 建立每日房源数量查询的视图
+CREATE VIEW v_anjuke_list_count AS
+SELECT
+	CASE 
+    WHEN substr(table_name, 13) <> '' THEN substr(table_name, 13) 
+    ELSE DATE_FORMAT(NOW(),"%Y%m%d") 
+  END AS run_date, table_rows AS rows
+FROM
+	information_schema.tables
+WHERE 
+	TABLE_SCHEMA = 'spider_anjuke' AND table_name LIKE "anjuke_list%"
+ORDER BY
+	run_date;
+
+-- 建立每月价格趋势数量查询的视图
+CREATE VIEW v_anjuke_price_trend_count AS
+SELECT
+	CASE 
+    WHEN substr(table_name, 20) <> '' THEN substr(table_name, 20) 
+    ELSE DATE_FORMAT(NOW(),"%Y%m")
+  END AS run_month, table_rows AS rows
+FROM 
+	information_schema.tables
+WHERE 
+	TABLE_SCHEMA = 'spider_anjuke' AND table_name LIKE "anjuke_price%"
+ORDER BY 
+	run_month;
