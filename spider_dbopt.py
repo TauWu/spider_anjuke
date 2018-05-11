@@ -3,13 +3,14 @@
 # 预运行工具 - 数据库操作工具
 
 from util.database import DBController
-from util.common.date import Time
+from util.common.date import Time, DateTime
 from util.config import ConfigReader
 from util.common.logger import use_logger
 from util.redis import RedisController
 
 import sys
 import time
+import datetime
 
 @use_logger(level="info")
 def db_optor_info(msg):
@@ -90,12 +91,18 @@ count_backup_sql = """
         count_{tablename}
         ({columnname}, rows)
     SELECT 
-        v.{columnname}, v.rows
+        v.{columnname}, t.c
     FROM
         v_{tablename}_count as v
-    WHERE
-        {wherestr}
-    ON DUPLICATE KEY UPDATE {columnname}=v.{columnname}
+    INNER JOIN
+        (
+            SELECT 
+                COUNT(1) AS c
+            FROM
+                {counttablename}
+        ) AS t ON v.{columnname} = '{runtime}'
+    ON DUPLICATE KEY 
+        UPDATE {columnname}=v.{columnname}, rows=t.c
 
 """
 
@@ -122,17 +129,16 @@ def backup_table(db, t):
     '''备份缓存表操作'''
 
     b1_sql = rename_sql.format(fromname=house_list_name,toname="%s_%s"%(house_list_name, t))
-    count_b1_sql = count_backup_sql.format(tablename=house_list_name, columnname="run_date", wherestr="run_date = %s"%t)
+    count_b1_sql = count_backup_sql.format(tablename=house_list_name,counttablename=house_list_name, columnname="run_date", runtime=t)
     db.execute(count_b1_sql)
     db.execute(b1_sql)
 
     ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
     if int(ps_mday) == int(time.localtime().tm_mday):
         b2_sql = rename_sql.format(fromname=price_trend_name,toname="%s_%s"%(price_trend_name, t[:-2]))
-        count_b2_sql = count_backup_sql.format(tablename=price_trend_name, columnname="run_month", wherestr="run_month = %s"%t)
+        count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename=price_trend_name, columnname="run_month", runtime=t)
         db.execute(count_b2_sql)
         db.execute(b2_sql)
-
 
     create(db)
     truncate_redis()
@@ -141,6 +147,29 @@ def truncate_redis():
     # 清空Redis - PageExtractor
     rds = RedisController(section_name="redis_pe")
     rds._redis_conn.flushdb()
+
+def refresh_count_table():
+    '''刷新所有表的数据量'''
+    bak_datetime = DateTime(ConfigReader.read_section_key("backup","start_date"))
+    now_datetime = DateTime(Time.ISO_date_str())
+
+    for _ in range(0, now_datetime-bak_datetime+1):
+        backup_count_table(bak_datetime.now_date_str)
+        bak_datetime += 1
+
+def backup_count_table(t):
+    '''备份统计表'''
+    count_b1_sql = count_backup_sql.format(tablename=house_list_name,counttablename="%s_%s"%(house_list_name, t), columnname="run_date", runtime=t)
+    count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename="%s_%s"%(price_trend_name, t),columnname="run_month", runtime=t)
+    ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
+
+    try:
+        db.execute(count_b1_sql)
+        if int(ps_mday) == int(time.localtime().tm_mday):
+            db.execute(count_b2_sql)
+    except Exception:
+        print(t, "备份失败！", count_b1_sql)
+
 
 
 if __name__ == "__main__":
@@ -207,6 +236,10 @@ if __name__ == "__main__":
             db_optor_info("开始清空Redis...")
             truncate_redis()
             db_optor_info("清空完成！")
+        
+        elif opeartor.strip() == "5":
+            '''测试代码'''
+            refresh_count_table()
     
     else:
         raise ValueError("参数太多")
