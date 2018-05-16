@@ -177,7 +177,7 @@ def backup_count_table(t, flag):
         db_optor_info("【%s】房源日常备份失败！"%(t))
     
     try:
-        if int(ps_mday) == int(time.localtime().tm_mday) and not flag:
+        if not flag:
             db.execute(count_b2_sql)
             db_optor_info("【%s00】价格趋势备份成功！"%(t[:-2]))
     except Exception:
