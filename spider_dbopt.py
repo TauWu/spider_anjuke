@@ -153,12 +153,17 @@ def refresh_count_table():
     '''刷新所有表的数据量'''
     bak_datetime = DateTime(ConfigReader.read_section_key("backup","start_date"))
     now_datetime = DateTime(Time.ISO_date_str())
+    month_list = list()
 
     for _ in range(0, now_datetime-bak_datetime+1):
-        backup_count_table(bak_datetime.now_date_str)
+        date_str = bak_datetime.date_str
+        month_str = date_str[:-2]
+        backup_count_table(bak_datetime.date_str, month_str in month_list)
         bak_datetime += 1
+        month_list.append(month_str)
 
-def backup_count_table(t):
+
+def backup_count_table(t, flag):
     '''备份统计表'''
     count_b1_sql = count_backup_sql.format(tablename=house_list_name,counttablename="%s_%s"%(house_list_name, t), columnname="run_date", runtime=t)
     count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename="%s_%s"%(price_trend_name, t[:-2]),columnname="run_month", runtime=t[:-2])
@@ -166,12 +171,17 @@ def backup_count_table(t):
 
     try:
         db.execute(count_b1_sql)
-        if int(ps_mday) == int(time.localtime().tm_mday):
-            db.execute(count_b2_sql)
+        db_optor_info("【%s】房源日常备份成功！"%t)
+
     except Exception:
-        db_optor_info("【%s】备份失败！"%(t))
-    else:
-        db_optor_info("【%s】备份成功！"%(t))
+        db_optor_info("【%s】房源日常备份失败！"%(t))
+    
+    try:
+        if int(ps_mday) == int(time.localtime().tm_mday) and not flag:
+            db.execute(count_b2_sql)
+            db_optor_info("【%s00】价格趋势备份成功！"%(t[:-2]))
+    except Exception:
+        db_optor_info("【%s00】价格趋势备份失败！"%(t[:-2]))
 
 def opeartion(operator):
     '''操作提取函数'''

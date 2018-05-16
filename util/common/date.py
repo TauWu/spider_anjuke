@@ -59,7 +59,7 @@ class DateTime(object):
         return datetime.datetime.fromtimestamp(str_timestamp)
 
     @property
-    def now_date_str(self):
+    def date_str(self):
         return self.ISO_date_str.replace('-', '')
 
     @property
