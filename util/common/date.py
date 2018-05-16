@@ -113,7 +113,7 @@ class DateTime(object):
             else:
                 return False
         else:
-            raise TypeError("类型错误，仅接收DateTime类型的添加时间数据")
+            raise TypeError("类型错误，仅接收DateTime类型的时间数据")
 
     def __le__(self, data):
         '''重载<='''
@@ -123,7 +123,7 @@ class DateTime(object):
             else:
                 return False
         else:
-            raise TypeError("类型错误，仅接收DateTime类型的添加时间数据")
+            raise TypeError("类型错误，仅接收DateTime类型的时间数据")
 
     def __ge__(self, data):
         '''重载>='''
@@ -133,7 +133,7 @@ class DateTime(object):
             else:
                 return False
         else:
-            raise TypeError("类型错误，仅接收DateTime类型的添加时间数据")
+            raise TypeError("类型错误，仅接收DateTime类型的时间数据")
     
     def __eq__(self, data):
         '''重载=='''
@@ -143,7 +143,7 @@ class DateTime(object):
             else:
                 return False
         else:
-            raise TypeError("类型错误，仅接收DateTime类型的添加时间数据")
+            raise TypeError("类型错误，仅接收DateTime类型的时间数据")
 
     def __ne__(self, data):
         '''重载!='''
@@ -153,7 +153,7 @@ class DateTime(object):
             else:
                 return False
         else:
-            raise TypeError("类型错误，仅接收DateTime类型的添加时间数据")
+            raise TypeError("类型错误，仅接收DateTime类型的时间数据")
 
 
     def add_days(self, days):

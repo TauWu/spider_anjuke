@@ -168,7 +168,9 @@ def backup_count_table(t):
         if int(ps_mday) == int(time.localtime().tm_mday):
             db.execute(count_b2_sql)
     except Exception:
-        print(t, "备份失败！", count_b1_sql)
+        db_optor_info("【%s】备份失败！"%(t))
+    else:
+        db_optor_info("【%s】备份成功！"%(t))
 
 
 
