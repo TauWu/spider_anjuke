@@ -179,9 +179,9 @@ def backup_count_table(t, flag):
     try:
         if not flag:
             db.execute(count_b2_sql)
-            db_optor_info("【%s00】价格趋势备份成功！"%(t[:-2]))
+            db_optor_info("【-%s-】价格趋势备份成功！"%(t[:-2]))
     except Exception:
-        db_optor_info("【%s00】价格趋势备份失败！"%(t[:-2]))
+        db_optor_info("【-%s-】价格趋势备份失败！"%(t[:-2]))
 
 def opeartion(operator):
     '''操作提取函数'''
