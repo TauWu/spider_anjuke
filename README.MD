@@ -49,7 +49,6 @@ PageExtractor | 页面信息提取 | 抽取房源详情页面的数据信息
 ## 并发建议
 1. `房源嗅探器`+`存入Redis` 为一个进程，带sleep执行爬虫任务；
 2. `Redis->DB`+`Redis->bs->DB` 为一个进程，此步骤较慢；
-3. `Timer（待确认）`为一个进程，主要计时是否需要继续运行第一个进程。
 
 ## 架构介绍
 ![image](https://raw.githubusercontent.com/TauWu/spider_anjuke/master/constant/images/spider_anjuke_workflow.png)
@@ -64,6 +63,3 @@ value | 含义
 0 | 运行完成，中间没有发生任何错误
 1 | 因网络原因导致的页面返回数据为空（目前已解决）
 2 | 网页格局超出解析器工作范围的房源忽略（待解决）
-
-## TODO
-- 循环执行PageExtractor次数统计有误，请后期核查

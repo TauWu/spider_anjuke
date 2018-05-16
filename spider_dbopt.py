@@ -28,6 +28,7 @@ welcome_str = """
 [2] 清空当前数据表。
 [3] 新建数据表。
 [4] 清空Redis。
+[5] 刷新爬虫数量。
 
 ---
 
@@ -136,7 +137,7 @@ def backup_table(db, t):
     ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
     if int(ps_mday) == int(time.localtime().tm_mday):
         b2_sql = rename_sql.format(fromname=price_trend_name,toname="%s_%s"%(price_trend_name, t[:-2]))
-        count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename=price_trend_name, columnname="run_month", runtime=t)
+        count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename=price_trend_name, columnname="run_month", runtime=t[:-2])
         db.execute(count_b2_sql)
         db.execute(b2_sql)
 
@@ -160,7 +161,7 @@ def refresh_count_table():
 def backup_count_table(t):
     '''备份统计表'''
     count_b1_sql = count_backup_sql.format(tablename=house_list_name,counttablename="%s_%s"%(house_list_name, t), columnname="run_date", runtime=t)
-    count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename="%s_%s"%(price_trend_name, t),columnname="run_month", runtime=t)
+    count_b2_sql = count_backup_sql.format(tablename=price_trend_name,counttablename="%s_%s"%(price_trend_name, t[:-2]),columnname="run_month", runtime=t[:-2])
     ps_mday = ConfigReader.read_section_key("quota", "ps_mday")
 
     try:
@@ -172,6 +173,40 @@ def backup_count_table(t):
     else:
         db_optor_info("【%s】备份成功！"%(t))
 
+def opeartion(operator):
+    '''操作提取函数'''
+    operator = opeartor.strip()
+
+    if operator == "0":
+        raise UserWarning("程序退出...")
+
+    elif opeartor == "1":
+        db_optor_info("开始备份数据表...")
+        backup_table(db, t)
+        db_optor_info("备份完成！")
+
+    elif opeartor == "2":
+        db_optor_info("开始清空该数据表...")
+        truncate(db)
+        db_optor_info("清空完成！")
+
+    elif opeartor == "3":
+        db_optor_info("开始创建新的数据表...")
+        create(db)
+        db_optor_info("创建完成！")
+
+    elif opeartor == "4":
+        db_optor_info("开始清空Redis...")
+        truncate_redis()
+        db_optor_info("清空完成！")
+
+    elif opeartor == "5":
+        db_optor_info("开始刷新爬虫数量信息...")
+        refresh_count_table()
+        db_optor_info("刷新完成！")
+
+    else:
+        raise ValueError("【%s】操作不存在"%(opeartor))
 
 
 if __name__ == "__main__":
@@ -186,33 +221,12 @@ if __name__ == "__main__":
         while True:
 
             opeartor = input(welcome_str)
-
-            if opeartor.strip() == "0":
-                db_optor_info("程序退出...")
+            try:
+                opeartion(opeartor)
+            except UserWarning:
                 break
-
-            elif opeartor.strip() == "1":
-                db_optor_info("开始备份数据表...")
-                backup_table(db, t)
-                db_optor_info("备份完成！")
-
-            elif opeartor.strip() == "2":
-                db_optor_info("开始清空该数据表...")
-                truncate(db)
-                db_optor_info("清空完成！")
-
-            elif opeartor.strip() == "3":
-                db_optor_info("开始创建新的数据表...")
-                create(db)
-                db_optor_info("创建完成！")
-
-            elif opeartor.strip() == "4":
-                db_optor_info("开始清空Redis...")
-                truncate_redis()
-                db_optor_info("清空完成！")
-
-            else:
-                db_optor_info("\n【%s】操作不存在，请重新选择！"%opeartor)
+            except ValueError as e:
+                db_optor_info("请重新输入参数！%s"%str(e))
                 continue
 
     # 携带一个参数的情况下直接执行一次该操作 - 为定时任务开发
@@ -220,28 +234,12 @@ if __name__ == "__main__":
 
         opeartor = sys.argv[1]
 
-        if opeartor.strip() == "1":
-            db_optor_info("开始备份数据表...")
-            backup_table(db, t)
-            db_optor_info("备份完成！")
-
-        elif opeartor.strip() == "2":
-            db_optor_info("开始清空该数据表...")
-            truncate(db)
-            db_optor_info("清空完成！")
-
-        elif opeartor.strip() == "3":
-            db_optor_info("开始创建新的数据表...")
-            create(db)
-            db_optor_info("创建完成！")
-        elif opeartor.strip() == "4":
-            db_optor_info("开始清空Redis...")
-            truncate_redis()
-            db_optor_info("清空完成！")
-        
-        elif opeartor.strip() == "5":
-            '''测试代码'''
-            refresh_count_table()
+        try:
+            opeartion(opeartor)
+        except UserWarning:
+            db_optor_info("没有任何操作")
+        except ValueError as e:
+            db_optor_info("没有任何操作 Err：%s"%str(e))
     
     else:
         raise ValueError("参数太多")
